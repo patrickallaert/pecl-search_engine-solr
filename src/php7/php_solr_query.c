@@ -122,6 +122,30 @@ PHP_METHOD(SolrQuery, __destruct)
     }
 /* }}} */
 
+/* {{{ proto SolrQuery SolrQuery::setDefaultField(string df)
+   Sets the q parameter */
+    PHP_METHOD(SolrQuery, setDefaultField)
+    {
+        solr_char_t *param_name = (solr_char_t *) "df";
+        COMPAT_ARG_SIZE_T param_name_len = sizeof("df")-1;
+        solr_char_t *param_value = NULL;
+        COMPAT_ARG_SIZE_T param_value_len = 0;
+
+        if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &param_value, &param_value_len) == FAILURE) {
+
+            php_error_docref(NULL, E_WARNING, "Invalid parameters");
+
+            RETURN_NULL();
+        }
+
+        if (solr_set_normal_param(getThis(), param_name, param_name_len, param_value, param_value_len) == FAILURE) {
+
+            RETURN_NULL();
+        }
+        solr_return_solr_params_object();
+    }
+/* }}} */
+
 /* {{{ proto SolrQuery SolrQuery::setStart(int start)
    Sets the start parameter */
 PHP_METHOD(SolrQuery, setStart)

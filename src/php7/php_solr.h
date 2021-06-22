@@ -309,6 +309,7 @@ PHP_METHOD(SolrQuery, __construct);
 PHP_METHOD(SolrQuery, __destruct);
 
 /* CommonQueryParameters  */
+PHP_METHOD(SolrQuery, setDefaultField);
 PHP_METHOD(SolrQuery, setQuery);
 PHP_METHOD(SolrQuery, getQuery);
 PHP_METHOD(SolrQuery, setStart);
