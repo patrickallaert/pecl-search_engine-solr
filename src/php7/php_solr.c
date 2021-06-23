@@ -330,6 +330,10 @@ ZEND_BEGIN_ARG_INFO_EX(SolrQuery_setDefaultField_args, SOLR_ARG_PASS_REMAINING_B
 ZEND_ARG_INFO(SOLR_ARG_PASS_BY_REF_FALSE, q)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(SolrQuery_setDefaultOp_args, SOLR_ARG_PASS_REMAINING_BY_REF_FALSE, SOLR_METHOD_RETURN_REFERENCE_FALSE, 1)
+ZEND_ARG_INFO(SOLR_ARG_PASS_BY_REF_FALSE, op)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(SolrQuery_setQuery_args, SOLR_ARG_PASS_REMAINING_BY_REF_FALSE, SOLR_METHOD_RETURN_REFERENCE_FALSE, 1)
 ZEND_ARG_INFO(SOLR_ARG_PASS_BY_REF_FALSE, q)
 ZEND_END_ARG_INFO()
@@ -775,6 +779,7 @@ static zend_function_entry solr_query_methods[] = {
 
 	/* CommonQueryParameters  */
 	PHP_ME(SolrQuery, setDefaultField, SolrQuery_setDefaultField_args, ZEND_ACC_PUBLIC)
+	PHP_ME(SolrQuery, setDefaultOp, SolrQuery_setDefaultOp_args, ZEND_ACC_PUBLIC)
 	PHP_ME(SolrQuery, setQuery, SolrQuery_setQuery_args, ZEND_ACC_PUBLIC)
 	PHP_ME(SolrQuery, getQuery, Solr_no_args, ZEND_ACC_PUBLIC)
 	PHP_ME(SolrQuery, setStart, SolrQuery_setStart_args, ZEND_ACC_PUBLIC)
