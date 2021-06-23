@@ -20,6 +20,7 @@
 void init_solr_dismax_query(void);
 PHP_METHOD(SolrDisMaxQuery, __construct);
 PHP_METHOD(SolrDisMaxQuery, setQueryAlt);
+PHP_METHOD(SolrDisMaxQuery, setBoost);
 PHP_METHOD(SolrDisMaxQuery, addQueryField);
 PHP_METHOD(SolrDisMaxQuery, removeQueryField);
 

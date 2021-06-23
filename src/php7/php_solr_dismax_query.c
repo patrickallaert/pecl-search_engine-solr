@@ -38,6 +38,10 @@ ZEND_BEGIN_ARG_INFO_EX(SolrDisMaxQuery__queryAlt_args, SOLR_ARG_PASS_REMAINING_B
 ZEND_ARG_INFO(0, q)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(SolrDisMaxQuery__setBoost_args, SOLR_ARG_PASS_REMAINING_BY_REF_FALSE, SOLR_METHOD_RETURN_REFERENCE_FALSE, 1)
+ZEND_ARG_INFO(0, boost)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(SolrDisMaxQuery_remove_field_arg, SOLR_ARG_PASS_REMAINING_BY_REF_FALSE, SOLR_METHOD_RETURN_REFERENCE_FALSE, 1)
 ZEND_ARG_INFO(0, field)
 ZEND_END_ARG_INFO()
@@ -85,6 +89,7 @@ ZEND_END_ARG_INFO()
 static zend_function_entry solr_dismax_query_methods[] = {
     PHP_ME(SolrDisMaxQuery, __construct, SolrDisMaxQuery__construct_args, ZEND_ACC_PUBLIC)
     PHP_ME(SolrDisMaxQuery, setQueryAlt, SolrDisMaxQuery__queryAlt_args, ZEND_ACC_PUBLIC)
+    PHP_ME(SolrDisMaxQuery, setBoost, SolrDisMaxQuery__setBoost_args, ZEND_ACC_PUBLIC)
 
     PHP_ME(SolrDisMaxQuery, addQueryField, SolrDisMaxQuery_addQueryField_args, ZEND_ACC_PUBLIC)
     PHP_ME(SolrDisMaxQuery, removeQueryField, SolrDisMaxQuery_remove_field_arg, ZEND_ACC_PUBLIC)
@@ -215,6 +220,28 @@ PHP_METHOD(SolrDisMaxQuery, setQueryAlt)
 {
     solr_char_t *pname = "q.alt";
     COMPAT_ARG_SIZE_T pname_len = sizeof("q.alt")-1;
+    solr_char_t *param_value = NULL;
+    COMPAT_ARG_SIZE_T param_value_len = 0, set_param_return = 0;
+
+    if(zend_parse_parameters(ZEND_NUM_ARGS(), "s", &param_value, &param_value_len) == FAILURE){
+        php_error_docref(NULL, E_ERROR, "Invalid parameters");
+        RETURN_NULL();
+    }
+
+    set_param_return = solr_add_or_set_normal_param(getThis(), pname, pname_len, param_value, param_value_len, 0);
+    if(set_param_return == FAILURE)
+    {
+        RETURN_NULL();
+    }
+    SOLR_RETURN_THIS();
+}
+/* }}} */
+
+/* {{{ proto SolrQuery::setBoost(string boost) */
+PHP_METHOD(SolrDisMaxQuery, setBoost)
+{
+    solr_char_t *pname = "boost";
+    COMPAT_ARG_SIZE_T pname_len = sizeof("boost")-1;
     solr_char_t *param_value = NULL;
     COMPAT_ARG_SIZE_T param_value_len = 0, set_param_return = 0;
 
