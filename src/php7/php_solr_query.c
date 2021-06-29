@@ -176,17 +176,18 @@ PHP_METHOD(SolrQuery, setStart)
 {
 	solr_char_t *param_name = (solr_char_t *) "start";
 	COMPAT_ARG_SIZE_T param_name_len = sizeof("start")-1;
-	solr_char_t *param_value = NULL;
-	COMPAT_ARG_SIZE_T param_value_len = 0;
+	zval *param_value = NULL;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &param_value, &param_value_len) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "z", &param_value) == FAILURE) {
 
 		php_error_docref(NULL, E_WARNING, "Invalid parameters");
 
 		RETURN_NULL();
 	}
 
-	if (solr_set_normal_param(getThis(), param_name, param_name_len, param_value, param_value_len) == FAILURE)
+	convert_to_string(param_value);
+
+	if (solr_set_normal_param(getThis(), param_name, param_name_len, Z_STRVAL_P(param_value), Z_STRLEN_P(param_value)) == FAILURE)
 	{
 		RETURN_NULL();
 	}
@@ -201,17 +202,18 @@ PHP_METHOD(SolrQuery, setRows)
 {
 	solr_char_t *param_name = (solr_char_t *) "rows";
 	COMPAT_ARG_SIZE_T param_name_len = sizeof("rows")-1;
-	solr_char_t *param_value = NULL;
-	COMPAT_ARG_SIZE_T param_value_len = 0;
+	zval *param_value = NULL;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &param_value, &param_value_len) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "z", &param_value) == FAILURE) {
 
 		php_error_docref(NULL, E_WARNING, "Invalid parameters");
 
 		RETURN_NULL();
 	}
 
-	if (solr_set_normal_param(getThis(), param_name, param_name_len, param_value, param_value_len) == FAILURE)
+	convert_to_string(param_value);
+
+	if (solr_set_normal_param(getThis(), param_name, param_name_len, Z_STRVAL_P(param_value), Z_STRLEN_P(param_value)) == FAILURE)
 	{
 		RETURN_NULL();
 	}
@@ -668,8 +670,7 @@ PHP_METHOD(SolrQuery, setFacetLimit)
 	solr_string_t fbuf; /* Field name buffer to prepare field override */
 
 	/* Parameter value */
-	solr_char_t *param_value = NULL;
-	COMPAT_ARG_SIZE_T  param_value_len = 0;
+	zval *param_value = NULL;
 
 	/* Field name override,f if any */
 	solr_char_t *field_name = NULL;
@@ -677,18 +678,20 @@ PHP_METHOD(SolrQuery, setFacetLimit)
 
 	memset(&fbuf, 0, sizeof(solr_string_t));
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|s", &param_value, &param_value_len, &field_name, &field_name_len) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "z|s", &param_value, &field_name, &field_name_len) == FAILURE) {
 
 		php_error_docref(NULL, E_WARNING, "Invalid parameters");
 
 		RETURN_NULL();
 	}
 
+	convert_to_string(param_value);
+
 	solr_query_field_override(&fbuf, field_name, field_name_len, "facet.limit");
 
-	if (solr_set_normal_param(getThis(), fbuf.str, fbuf.len, param_value, param_value_len) == FAILURE)
+	if (solr_set_normal_param(getThis(), fbuf.str, fbuf.len, Z_STRVAL_P(param_value), Z_STRLEN_P(param_value)) == FAILURE)
 	{
-		php_error_docref(NULL, E_WARNING, "Error setting parameter %s=%s ", fbuf.str, param_value);
+		php_error_docref(NULL, E_WARNING, "Error setting parameter %s=%s ", fbuf.str, Z_STRVAL_P(param_value));
 
 		solr_string_free(&fbuf);
 
@@ -741,15 +744,14 @@ PHP_METHOD(SolrQuery, setFacetOffset)
 }
 /* }}} */
 
-/* {{{ proto SolrQuery SolrQuery::setFacetMinCount(string value [, string field_override])
+/* {{{ proto SolrQuery SolrQuery::setFacetMinCount(int value [, string field_override])
    Sets the facet.mincount parameter. Accepts an optional field override. */
 PHP_METHOD(SolrQuery, setFacetMinCount)
 {
 	solr_string_t fbuf; /* Field name buffer to prepare field override */
 
 	/* Parameter value */
-	solr_char_t *param_value = NULL;
-	COMPAT_ARG_SIZE_T  param_value_len = 0;
+	zval *param_value = NULL;
 
 	/* Field name override,f if any */
 	solr_char_t *field_name = NULL;
@@ -757,18 +759,20 @@ PHP_METHOD(SolrQuery, setFacetMinCount)
 
 	memset(&fbuf, 0, sizeof(solr_string_t));
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|s", &param_value, &param_value_len, &field_name, &field_name_len) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "z|s", &param_value, &field_name, &field_name_len) == FAILURE) {
 
 		php_error_docref(NULL, E_WARNING, "Invalid parameters");
 
 		RETURN_NULL();
 	}
 
+	convert_to_string(param_value);
+
 	solr_query_field_override(&fbuf, field_name, field_name_len, "facet.mincount");
 
-	if (solr_set_normal_param(getThis(), fbuf.str, fbuf.len, param_value, param_value_len) == FAILURE)
+	if (solr_set_normal_param(getThis(), fbuf.str, fbuf.len, Z_STRVAL_P(param_value), Z_STRLEN_P(param_value)) == FAILURE)
 	{
-		php_error_docref(NULL, E_WARNING, "Error setting parameter %s=%s ", fbuf.str, param_value);
+		php_error_docref(NULL, E_WARNING, "Error setting parameter %s=%s ", fbuf.str, Z_STRVAL_P(param_value));
 
 		solr_string_free(&fbuf);
 
